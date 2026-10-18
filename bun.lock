@@ -9,17 +9,17 @@
         "typescript": "7.0.2",
       },
       "optionalDependencies": {
-        "@sebastienelet/proof-integrity-review-darwin-arm64": "1.0.0",
-        "@sebastienelet/proof-integrity-review-linux-x64-gnu": "1.0.0",
+        "@sebastienelet/proof-integrity-review-darwin-arm64": "0.0.1",
+        "@sebastienelet/proof-integrity-review-linux-x64-gnu": "0.0.1",
       },
     },
     "native/darwin-arm64": {
       "name": "@sebastienelet/proof-integrity-review-darwin-arm64",
-      "version": "1.0.0",
+      "version": "0.0.1",
     },
     "native/linux-x64-gnu": {
       "name": "@sebastienelet/proof-integrity-review-linux-x64-gnu",
-      "version": "1.0.0",
+      "version": "0.0.1",
     },
   },
   "packages": {

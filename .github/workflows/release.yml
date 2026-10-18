@@ -25,6 +25,7 @@ jobs:
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: 24.21.0
+          registry-url: https://registry.npmjs.org
           package-manager-cache: false
       - run: npm publish packages/packages-darwin-arm64/native-darwin-arm64.tgz --access public --provenance --ignore-scripts --registry https://registry.npmjs.org
       - run: npm publish packages/packages-linux-x64-gnu/native-linux-x64-gnu.tgz --access public --provenance --ignore-scripts --registry https://registry.npmjs.org

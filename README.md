@@ -4,7 +4,7 @@ Review changed verification mechanisms. The ordinary review needs no structured 
 An optional `proof-integrity` companion validates content-bound receipt declarations; acceptance
 proves neither execution truth, auditor independence nor permission to merge.
 
-This repository prepares `@sebastienelet/proof-integrity-review@1.0.0`. It has not been published
+This repository prepares `@sebastienelet/proof-integrity-review@0.0.1`. It has not been published
 or qualified from the public registry. The initial release targets macOS ARM64 and Linux x64 glibc.
 The Linux build/qualification baseline is Ubuntu 24.04; other glibc distributions are unqualified.
 Git and Bun 1.4.3 are runtime prerequisites. Rust 1.98.1 is needed only for contribution/rebuilding.
@@ -14,7 +14,7 @@ Git and Bun 1.4.3 are runtime prerequisites. Rust 1.98.1 is needed only for cont
 Use a durable directory dedicated to the exact version, then:
 
 ```sh
-bun add --exact @sebastienelet/proof-integrity-review@1.0.0
+bun add --exact @sebastienelet/proof-integrity-review@0.0.1
 ./node_modules/.bin/proof-integrity --help
 ```
 
@@ -60,7 +60,7 @@ No npm installation or token fallback is configured. All three packages must tru
 in the npm scope before release. Node 24.21.0 supplies the publishing CLI (npm >=11.5.1).
 The GitHub repository and npm trusted publishers are not created by this source preparation.
 
-A release tag matches the package version (`v1.0.0`). Publication across packages is not atomic:
+A release tag matches the package version (`v0.0.1`). Publication across packages is not atomic:
 on partial failure, inspect the registry and provenance before retrying; do not overwrite or unpublish
 an existing version. A mismatching published version requires investigation and a new version.
 After publication, install exact versions with Bun on both targets and repeat the CLI suite;

@@ -15,7 +15,7 @@ No Python, Arnes, Moon or dotfiles checkout is required.
 Acquire the exact package version with Bun in a durable directory dedicated to that version:
 
 ```sh
-bun add --exact @sebastienelet/proof-integrity-review@1.0.0
+bun add --exact @sebastienelet/proof-integrity-review@0.0.1
 ```
 
 Set `PROOF_PACKAGE_ROOT` to the absolute installed `node_modules/@sebastienelet/proof-integrity-review`

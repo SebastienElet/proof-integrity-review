@@ -1,6 +1,6 @@
 {
   "name": "@sebastienelet/proof-integrity-review-linux-x64-gnu",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Native proof-integrity CLI for linux-x64-gnu",
   "license": "BSD-2-Clause",
   "repository": {
