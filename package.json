@@ -1,6 +1,6 @@
 {
   "name": "@sebastienelet/proof-integrity-review",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Proof integrity review skill and optional content-bound receipt CLI.",
   "license": "BSD-2-Clause",
   "type": "module",
@@ -38,8 +38,8 @@
     "native/*"
   ],
   "optionalDependencies": {
-    "@sebastienelet/proof-integrity-review-darwin-arm64": "1.0.0",
-    "@sebastienelet/proof-integrity-review-linux-x64-gnu": "1.0.0"
+    "@sebastienelet/proof-integrity-review-darwin-arm64": "0.0.1",
+    "@sebastienelet/proof-integrity-review-linux-x64-gnu": "0.0.1"
   },
   "devDependencies": {
     "@types/bun": "1.4.2",

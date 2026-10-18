@@ -1,6 +1,6 @@
 [package]
 name = "proof-integrity"
-version = "1.0.0"
+version = "0.0.1"
 edition = "2024"
 description = "Content-bound review epochs and fail-closed proof receipt validation."
 license-file = "LICENSE"
