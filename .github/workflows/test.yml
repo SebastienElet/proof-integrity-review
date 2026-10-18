@@ -61,7 +61,7 @@ jobs:
           bun add --ignore-scripts --exact "$RUNNER_TEMP/packages/"*.tgz
           cd "$GITHUB_WORKSPACE"
           PROOF_INTEGRITY_TEST_BIN="$RUNNER_TEMP/installed/node_modules/.bin/proof-integrity" cargo test --locked --manifest-path "$CARGO_MANIFEST" --test integration
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: packages-${{ matrix.variant }}
           path: ${{ runner.temp }}/packages/*.tgz
