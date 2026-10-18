@@ -1,0 +1,27 @@
+{
+  "name": "@sebastienelet/proof-integrity-review-darwin-arm64",
+  "version": "1.0.0",
+  "description": "Native proof-integrity CLI for darwin-arm64",
+  "license": "BSD-2-Clause",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SebastienElet/proof-integrity-review.git"
+  },
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "bin/",
+    "LICENSE",
+    "NOTICE",
+    "THIRD-PARTY-NOTICES",
+    "SOURCE_REVISION"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

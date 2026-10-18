@@ -1,0 +1,31 @@
+name: Publish
+
+on:
+  push:
+    tags: [v*.*.*]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    uses: ./.github/workflows/test.yml
+  publish:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          pattern: packages-*
+          path: packages
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 24.21.0
+          package-manager-cache: false
+      - run: npm publish packages/packages-darwin-arm64/native-darwin-arm64.tgz --access public --provenance --ignore-scripts --registry https://registry.npmjs.org
+      - run: npm publish packages/packages-linux-x64-gnu/native-linux-x64-gnu.tgz --access public --provenance --ignore-scripts --registry https://registry.npmjs.org
+      - run: npm publish packages/packages-linux-x64-gnu/skill.tgz --access public --provenance --ignore-scripts --registry https://registry.npmjs.org

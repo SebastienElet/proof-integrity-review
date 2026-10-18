@@ -1,0 +1,5 @@
+node_modules/
+**/target/
+native/*/bin/
+native/*/SOURCE_REVISION
+*.tgz

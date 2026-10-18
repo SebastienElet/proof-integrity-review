@@ -1,0 +1,56 @@
+{
+  "name": "@sebastienelet/proof-integrity-review",
+  "version": "1.0.0",
+  "description": "Proof integrity review skill and optional content-bound receipt CLI.",
+  "license": "BSD-2-Clause",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SebastienElet/proof-integrity-review.git"
+  },
+  "packageManager": "bun@1.4.3",
+  "engines": {
+    "bun": ">=1.4.3"
+  },
+  "bin": {
+    "proof-integrity": "bin/proof-integrity.ts"
+  },
+  "files": [
+    "bin/",
+    "skills/proof-integrity-review/SKILL.md",
+    "skills/proof-integrity-review/agents/",
+    "skills/proof-integrity-review/evals/",
+    "skills/proof-integrity-review/references/",
+    "skills/proof-integrity-review/scripts/Cargo.toml",
+    "skills/proof-integrity-review/scripts/Cargo.lock",
+    "skills/proof-integrity-review/scripts/LICENSE",
+    "skills/proof-integrity-review/scripts/clippy.toml",
+    "skills/proof-integrity-review/scripts/policy-sources.json",
+    "skills/proof-integrity-review/scripts/src/",
+    "skills/proof-integrity-review/scripts/tests/",
+    "tests/",
+    "tsconfig.json",
+    "LICENSE",
+    "NOTICE",
+    "THIRD-PARTY-NOTICES"
+  ],
+  "workspaces": [
+    "native/*"
+  ],
+  "optionalDependencies": {
+    "@sebastienelet/proof-integrity-review-darwin-arm64": "1.0.0",
+    "@sebastienelet/proof-integrity-review-linux-x64-gnu": "1.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.2",
+    "typescript": "7.0.2"
+  },
+  "scripts": {
+    "test": "bun test",
+    "typecheck": "tsc --noEmit"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  }
+}

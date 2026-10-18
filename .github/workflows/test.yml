@@ -1,0 +1,68 @@
+name: Proof Integrity tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  proof-integrity:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-26
+            variant: darwin-arm64
+          - os: ubuntu-24.04
+            variant: linux-x64-gnu
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      CARGO_MANIFEST: skills/proof-integrity-review/scripts/Cargo.toml
+      VARIANT: ${{ matrix.variant }}
+      RUSTFLAGS: -Funsafe-code
+      RUSTDOCFLAGS: -Dwarnings
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: 1.4.3
+      - run: rustup toolchain install 1.98.1 --profile minimal --component clippy --component rustfmt
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun run typecheck
+      - run: bun test
+      - name: Existing Rust checks
+        run: |
+          cargo fmt --all --check --manifest-path "$CARGO_MANIFEST"
+          cargo clippy --all-targets --all-features --locked --manifest-path "$CARGO_MANIFEST" -- -D warnings
+          cargo check --all-targets --all-features --locked --manifest-path "$CARGO_MANIFEST"
+          cargo test --all-features --locked --manifest-path "$CARGO_MANIFEST"
+          cargo doc --all-features --no-deps --locked --manifest-path "$CARGO_MANIFEST"
+      - name: Build native package
+        run: |
+          cargo build --release --locked --manifest-path "$CARGO_MANIFEST"
+          mkdir -p "native/$VARIANT/bin" "$RUNNER_TEMP/packages"
+          cp skills/proof-integrity-review/scripts/target/release/proof-integrity "native/$VARIANT/bin/proof-integrity"
+          printf '%s\n' "$GITHUB_SHA" > "native/$VARIANT/SOURCE_REVISION"
+      - name: Pack native and skill artifacts
+        run: |
+          bun pm pack --cwd "native/$VARIANT" --ignore-scripts --filename "$RUNNER_TEMP/packages/native-$VARIANT.tgz"
+          bun pm pack --ignore-scripts --filename "$RUNNER_TEMP/packages/skill.tgz"
+      - name: Exercise packaged CLI with the existing integration suite
+        run: |
+          mkdir "$RUNNER_TEMP/installed"
+          cd "$RUNNER_TEMP/installed"
+          bun add --ignore-scripts --exact "$RUNNER_TEMP/packages/"*.tgz
+          cd "$GITHUB_WORKSPACE"
+          PROOF_INTEGRITY_TEST_BIN="$RUNNER_TEMP/installed/node_modules/.bin/proof-integrity" cargo test --locked --manifest-path "$CARGO_MANIFEST" --test integration
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: packages-${{ matrix.variant }}
+          path: ${{ runner.temp }}/packages/*.tgz
+          if-no-files-found: error
