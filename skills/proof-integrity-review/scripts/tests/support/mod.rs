@@ -11,7 +11,7 @@ use tempfile::TempDir;
 pub type Result<T = ()> = std::result::Result<T, Box<dyn Error>>;
 
 pub fn digest(bytes: &[u8]) -> String {
-    format!("sha256:{:x}", Sha256::digest(bytes))
+    format!("sha256:{}", hex::encode(Sha256::digest(bytes)))
 }
 pub fn bound(value: &Value) -> Result<String> {
     Ok(digest(&serde_json::to_vec(value)?))
