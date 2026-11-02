@@ -9,6 +9,9 @@ permissions:
 
 jobs:
   build:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: ./.github/workflows/test.yml
   publish:
     needs: build

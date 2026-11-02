@@ -66,3 +66,20 @@ jobs:
           name: packages-${{ matrix.variant }}
           path: ${{ runner.temp }}/packages/*.tgz
           if-no-files-found: error
+  automerge:
+    needs: proof-integrity
+    if: >-
+      github.event_name == 'pull_request' && github.base_ref == 'main' &&
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PR_URL: ${{ github.event.pull_request.html_url }}
+      HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    steps:
+      - run: gh pr merge "$PR_URL" --squash --match-head-commit "$HEAD_SHA"

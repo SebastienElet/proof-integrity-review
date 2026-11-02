@@ -62,3 +62,41 @@ test("preserves termination by a native signal", async () => {
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("prefers the nearest local package, then a hoisted sibling, independently of the working directory", async () => {
+  const root = await mkdtemp(join(tmpdir(), "proof-launcher-"));
+  try {
+    const installed = join(root, "installed/node_modules");
+    const launcherRoot = join(installed, "@sebastienelet/proof-integrity-review");
+    const launcher = join(launcherRoot, "bin/proof-integrity.ts");
+    const workingDirectory = join(root, "unrelated");
+    await mkdir(join(launcherRoot, "bin"), { recursive: true });
+    await mkdir(workingDirectory);
+    await cp(new URL("../bin/proof-integrity.ts", import.meta.url), launcher);
+    const variant = process.platform === "darwin" ? "darwin-arm64" : "linux-x64-gnu";
+    const packagePath = join("@sebastienelet", `proof-integrity-review-${variant}`);
+    const localPackage = join(launcherRoot, "node_modules", packagePath);
+    const hoistedPackage = join(installed, packagePath);
+    for (const [directory, exitCode] of [
+      [localPackage, 11],
+      [hoistedPackage, 7],
+      [join(installed, "node_modules", packagePath), 29],
+      [join(workingDirectory, "node_modules", packagePath), 23],
+    ] as const) {
+      await mkdir(join(directory, "bin"), { recursive: true });
+      const binary = join(directory, "bin/proof-integrity");
+      await writeFile(binary, `#!/usr/bin/env bun\nprocess.exit(${exitCode});\n`);
+      await chmod(binary, 0o755);
+    }
+    const launch = () => Bun.spawnSync([process.execPath, launcher], { cwd: workingDirectory });
+    expect(launch().exitCode).toBe(11);
+    await rm(localPackage, { recursive: true });
+    expect(launch().exitCode).toBe(7);
+    await rm(hoistedPackage, { recursive: true });
+    const missing = launch();
+    expect(missing.exitCode).toBe(2);
+    expect(missing.stderr.toString()).toContain("Missing native package");
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
